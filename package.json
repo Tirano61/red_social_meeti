@@ -9,6 +9,8 @@
   "author": "Dario Ramirez",
   "license": "ISC",
   "devDependencies": {
+    "@types/nodemailer": "^6.4.15",
+    "@types/passport": "^1.0.16",
     "nodemon": "^3.1.4"
   },
   "dependencies": {

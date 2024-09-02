@@ -16,9 +16,9 @@
   console.log({ data });
 })(); */
 
-module.exports = {
+/* module.exports = {
   user: process.env.USER_SMTP,
   pass: process.env.PASS_SMTP,
   host: process.env.HOST_SMTP,
   port: process.env.PORT_SMTP
-}
+} */

@@ -9,21 +9,19 @@ const { Resend } = require('resend');
 
 
 
-let transport = nodeMailer.createTransport({
-    host: emailConfig.host,
-    port: emailConfig.port,
-    auth:{
-        user: emailConfig.user,
-        pass: emailConfig.pass
-    },
-   
-
-});
 
 exports.enviarEmail = async(opciones) =>{
-
+    
+    let transport = nodeMailer.createTransport({
+        host: process.env.HOSTSMTP,
+        port: process.env.PORTSMTP,
+        auth:{
+            user: process.env.USERSMTP,
+            pass: process.env.PASSSMTP
+        },
+    });
     //! Esto es si uso resend
-    const resend = new Resend(process.env.RESEND);
+    //const resend = new Resend(process.env.RESEND);
     
     //! Leer el archivo para enviar el email
     const archivo = __dirname+`/../views/emails/${opciones.archivo}.ejs`;
@@ -32,7 +30,7 @@ exports.enviarEmail = async(opciones) =>{
 
     //! crear el html
     const html = compilado({ url: opciones.url });
-
+/* 
     const { data, error } = await resend.emails.send({
         from: 'Meeti <onboarding@resend.dev>',
         to: [`${opciones.usuario.email}`],
@@ -44,11 +42,11 @@ exports.enviarEmail = async(opciones) =>{
         return console.error({ error });
       }
     
-      console.log({ data });
+      console.log({ data }); */
     
-  /*   //! configurar las opciones del email
+    //! configurar las opciones del email
     const opcionesEmail = {
-        from: 'Pruebas',
+        from: 'Meeti',
         to: opciones.usuario.email,
         subject: opciones.subject,
         html
@@ -56,5 +54,5 @@ exports.enviarEmail = async(opciones) =>{
 
     //! enviar el email
     const sendEmail = util.promisify(transport.sendMail, transport);
-    return sendEmail.call(transport, opcionesEmail); */
+    return sendEmail.call(transport, opcionesEmail);
 }
