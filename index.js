@@ -8,11 +8,13 @@ const cookieParser = require('cookie-parser');
 const passport = require('./config/passport');
 
 const router = require('./routes');
-const db = require('./config/dbConfig');
 
 
 //! Conexión a postgresql
-require('./models/Usuarios')
+const db = require('./config/dbConfig');
+require('./models/Usuarios');
+require('./models/Categorias');
+require('./models/Grupos');
 db.sync().then(() =>{
     console.log('DB COnectada !!!') ;
 }).catch( (error) => console.log(error));

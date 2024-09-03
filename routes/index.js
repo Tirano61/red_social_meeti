@@ -35,6 +35,10 @@ module.exports = function(){
         authController.usuarioAutenticado,
         gruposController.formNuevoGrupo
     );
+    router.post('/nuevo-grupo', 
+        
+        gruposController.crearGrupo
+    );
 
     
     return router;
