@@ -5,11 +5,12 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
+require('dotenv').config({path: '.env'});
 const passport = require('./config/passport');
 
 const router = require('./routes');
 
-
+console.log(`Esto es lo que obtuvo :  ${process.env.DBHOST}`);
 //! Conexión a postgresql
 const db = require('./config/dbConfig');
 require('./models/Usuarios');
@@ -20,7 +21,6 @@ db.sync().then(() =>{
 }).catch( (error) => console.log(error));
 
 //! Variables de entorno
-require('dotenv').config({path: '.env'});
 
 //! Aplicacion principal
 const app = express();

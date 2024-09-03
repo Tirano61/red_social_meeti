@@ -17,7 +17,8 @@ exports.enviarEmail = async(opciones) =>{
         let transport = nodeMailer.createTransport({
             host: process.env.HOSTSMTP,
             port: process.env.PORTSMTP,
-   
+            secure:false,
+            requireTLS: true,
             auth:{
                 user: process.env.USERSMTP,
                 pass: process.env.PASSSMTP
@@ -49,7 +50,7 @@ exports.enviarEmail = async(opciones) =>{
         
         //! configurar las opciones del email
         const opcionesEmail = {
-            from: 'Meeti',
+            from: 'Meeti <sistemas@balanzashook.com.ar>',
             to: opciones.usuario.email,
             subject: opciones.subject,
             html

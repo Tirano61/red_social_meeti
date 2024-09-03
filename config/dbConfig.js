@@ -13,4 +13,4 @@ module.exports = new Sequelize('meeti', 'postgres', '180774', {
     },
     //! para que no este escribiendo todo lo que hace en consola asi se deshabilita
     logging: false
-})
+});
