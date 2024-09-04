@@ -97,3 +97,77 @@ exports.crearGrupo = async (req, res) => {
     }
     
 }
+
+exports.formEditarGrupo = async(req,res) =>{
+ 
+    const consultas = [];
+    consultas.push( Grupos.findByPk(req.params.grupoId));
+    consultas.push(Categorias.findAll());
+
+    const [ grupo, categorias ] = await Promise.all(consultas);
+
+    res.render('editar-grupo', {
+        nombrePagina: `Editar Grupo - ${ grupo.nombre}`,
+        grupo,
+        categorias
+    });
+}
+
+//! Guardar los cambios en la base de datos
+exports.editarGrupo = async (req, res, next) =>{
+    const grupo = await Grupos.findOne({ where: {id: req.params.grupoId, usuarioId: req.user.id }});
+
+    //! Si no existe ese grupo o no es el dueño
+    if (!grupo) {
+        req.flash('error', 'Operación no válida');
+        res.redirect('/administracion');
+        return next();
+    }
+
+    //! Todo bien, leer los valores
+    const { nombre, descripcion,categoriaId, url } = req.body;
+
+    //! Asignar los valores
+    grupo.nombre = nombre;
+    grupo.descripcion = descripcion;
+    grupo.categoriaId = categoriaId;
+    grupo.url = url;
+
+    //! Guardar en la base de datos
+    await grupo.save();
+
+    req.flash('exito', 'Cambios almacenados correctamente');
+    res.redirect('/administracion');
+}
+
+//! Muestra el formulario para editar una imagen de grupo
+exports.formEditarImagen = async (req, res) =>{
+    const grupo = await Grupos.findOne({ where: {id: req.params.grupoId, usuarioId: req.user.id }});
+    
+    res.render('imagen-grupo', {
+        nombrePagina: `Editar Imagen de Grupo - ${grupo.nombre}`,
+        grupo
+    })
+}
+
+//! Modifica la imagen en la base de datos y elimina la anterior
+
+exports.editarImagen = async (req, res, next) => {
+    const grupo = await Grupos.findOne({ where: {id: req.params.grupoId, usuarioId: req.user.id }});
+
+    if(!grupo){
+        req.flash('error', 'Operación no válidda');
+        res.redirect('/iniciar-sesion');
+        return next();
+    } 
+
+    //! Verificar que el archivo sea nuevo
+    if(req.file){
+        console.log(req.file.filename);
+    }
+    //! Revisar si exiiste un archivo anterior
+    if(grupo.imagen){
+        console.log(grupo.imagen);
+    }
+
+}

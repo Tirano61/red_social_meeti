@@ -36,10 +36,29 @@ module.exports = function(){
         gruposController.formNuevoGrupo
     );
     router.post('/nuevo-grupo', 
+        authController.usuarioAutenticado,
         gruposController.subirImagen,
         gruposController.crearGrupo
     );
-
+    //! Editar grupos
+    router.get('/editar-grupo/:grupoId',
+        authController.usuarioAutenticado,
+        gruposController.formEditarGrupo
+    );
+    router.post('/editar-grupo/:grupoId',
+        authController.usuarioAutenticado,
+        gruposController.editarGrupo
+    );
+    //! Editar la imagen del grupo
+    router.get('/imagen-grupo/:grupoId',
+        authController.usuarioAutenticado,
+        gruposController.formEditarImagen
+    );
+    router.post('/imagen-grupo/:grupoId',
+        authController.usuarioAutenticado,
+        gruposController.subirImagen,
+        gruposController.editarImagen
+    );    
     
     return router;
 }
