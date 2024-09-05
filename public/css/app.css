@@ -135,6 +135,8 @@ p {
     justify-content: space-between;
     min-height: 250px;
 }
+
+
 .card h3,
 .informacion-admin h3 {
     font-size: 1.8rem;
@@ -404,6 +406,13 @@ trix-editor  {
 trix-editor h1 {
     text-align: left!important;
 }
+.mapa{
+    width: 100%;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .campo.descripcion label {
     display: block;
     margin-bottom: 2rem;
@@ -626,4 +635,14 @@ aside .ubicacion {
 }
 aside img {
     display: block;
+}
+
+.contenedor-input{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+.buscador{
+    width: 100%;
+    display: flex;
 }
