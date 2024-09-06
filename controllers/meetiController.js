@@ -38,7 +38,7 @@ exports.crearMeeti = async(req,res) =>{
         res.redirect('/administracion');
     } catch (error) {
         const errores = error.errors.map(err=> err.message);
-        
+
         req.flash('error', errores);
         res.redirect('/nuevo-meeti')
     }
