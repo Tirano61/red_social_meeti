@@ -56,14 +56,15 @@ function buscarDireccion(e){
                         llenarInputs(result);
                         //! asigna los valores al popup del marker
                         marker.bindPopup(result.address.LongLabel);
-                    }) 
+                    }); 
                 })
 
                 //! Asignar al contenedor markers
-                markers.addLayer(marker);
             })
+           
 
         });
+        markers.addLayer(marker);
     }
 }
 

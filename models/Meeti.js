@@ -68,16 +68,7 @@ const Meeti = db.define('meeti',{
             }
         }
     },
-    cuidad: {
-        type: Sequelize.TIME,
-        allowNull: false,
-        validate:{
-            notEmpty:{
-                msg : 'Agrega una ciudad para el Meeti'
-            }
-        }
-    },
-    cuidad: {
+    ciudad: {
         type: Sequelize.STRING,
         allowNull: false,
         validate:{
