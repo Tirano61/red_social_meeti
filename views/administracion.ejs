@@ -8,13 +8,14 @@
         <a href="/iamgen-perfil" class="btn btn-amarillo">Imagen Perfil</a>
     </div>
     <div class="seccion-admin">
-        <h2>Tus Eventos</h2>
-        <% if(meetis.length) { %>
+        <h2>Próximos Eventos</h2>
+        <% if(meetis.length > 0) { %>
         <ul>
             <% meetis.forEach(meeti => { %>
                 <li>
                     <div class="informacion-admin">
-                        <p class="fecha"><%= meeti.fecha %></p>
+                        <% moment.locale('es') %>
+                        <p class="fecha"><%= moment( meeti.fecha).format('LL')  %></p>
                         <h3><%= meeti.titulo %></h3>
                         <small><%= meeti.interesados.length %> Interesados</small>
                     </div>
@@ -51,5 +52,31 @@
         <% }else{ %>
             <P>No tienes un grupo creado</P>
         <% } %>
+    </div>
+
+    <div class="seccion-admin">
+        <h2>Eventos Anteriores</h2>
+        <% if(anteriores.length > 0) { %>
+        <ul>
+            <% anteriores.forEach(meeti => { %>
+                <li>
+                    <div class="informacion-admin">
+                        <% moment.locale('es') %>
+                        <p class="fecha"><%= moment( meeti.fecha ).format('LL')  %></p>
+                        <h3><%= meeti.titulo %></h3>
+                        <small><%= meeti.interesados.length %> Interesados</small>
+                    </div>
+                    <div class="acciones contenedor-botones">
+                        <a href="/editar-meeti/<%= meeti.id %>" class="btn-verde btn">Editar</a>
+                        <a href="/asistentes-meeti/<%= meeti.id %>" class="btn-azul2 btn">Asistentes</a>
+                        <a href="/eliminar-meeti/<%= meeti.id %>" class="btn-rojo btn">Eliminar</a>
+                    </div>
+                </li>
+            <% }) %>
+        </ul>
+        <% }else{ %>
+            <p>No hay meetis anteriores</p>
+        <% } %>
+
     </div>
 </main>

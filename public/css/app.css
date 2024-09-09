@@ -355,6 +355,11 @@ main.contenedor-formularios {
     padding: 0!important;
 }
 
+.form-editar{
+    width: 80%;
+    margin: auto;
+}
+
 .default-form .campo {
     display: flex;
     align-items: center;
