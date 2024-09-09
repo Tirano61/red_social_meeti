@@ -2,6 +2,7 @@ const flash = require("connect-flash/lib/flash");
 const Grupos = require("../models/Grupos");
 const Meeti = require("../models/Meeti");
 const { body, validationResult } = require('express-validator');
+const { parse } = require("dotenv");
 
 
 
@@ -87,6 +88,75 @@ exports.formEditarMeeti = async(req, res) =>{
         grupos,
         meeti
     })
+}
 
+//! Almacena los cambios en el Meeti
+exports.editarMeeti = async (req,res, next) =>{
+    const meeti = await Meeti.findOne({where:{id: req.params.id, usuarioId: req.user.id}});
 
+    if(!meeti){
+        req.flash('error', 'Operación no valida');
+        res.redirect('/administracion');
+        return next();
+    }
+    //console.log(meeti);
+    //! asignar los valores
+    const {grupoId, titulo, invitado, fecha,hora,cupo, 
+    descripcion, direccion, ciudad, estado, pais, lat, lng} = req.body;
+
+    meeti.grupoId   = grupoId; 
+    meeti.titulo    = titulo;
+    meeti.invitado  = invitado;
+    meeti.fecha     = fecha;
+    meeti.hora      = hora;
+    meeti.cupo      = cupo;
+    meeti.descripcion = descripcion;
+    meeti.direccion = direccion;
+    meeti.ciudad    = ciudad;
+    meeti.estado    = estado;
+    meeti.pais      = pais;
+    //! Asignar el point
+    const point = {type: 'Point', coordinates:[ parseFloat(lat), parseFloat(lng)]};
+    meeti.ubicacion = point;
+    try {
+        //! almacenar
+        await meeti.save();
+
+        req.flash('exito', 'Cambios guardados correctamente' );
+        res.redirect('/administracion');
+    } catch (error) {
+        console.log(error);
+    }    
+    
+
+}
+
+//! Muestra el formulario para eliminar Meeti
+exports.formEliminarMeeti = async(req, res, next) =>{
+    const meeti = await Meeti.findOne({where: {
+        id: req.params.id, usuarioId: req.user.id
+    }});
+
+    if(!meeti){
+        req.flash('error', 'Operación no valida');
+        res.redirect('/administracion');
+        return next();
+    }
+
+    //! Mostrar la vista
+    res.render('eliminar-meeti', {
+        nombrePagina: `Eliminar Meeti - ${meeti.titulo}`,
+    });
+}
+
+//! Elimia el meeti 
+exports.eliminarMeeti = async(req,res) =>{
+    await Meeti.destroy({
+        where:{
+            id: req.params.id
+        }
+    });
+
+    req.flash('exito', 'Meeti eliminado');
+    res.redirect('/administracion');
 }

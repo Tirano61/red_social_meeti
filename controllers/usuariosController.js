@@ -80,3 +80,17 @@ exports.confirmarCuenta = async(req, res, next) =>{
     req.flash('exito', 'La cuenta se a confirmado ya puedes iniciar sesion' );
     res.redirect('/iniciar-sesion');
 }
+
+
+exports.formEditarPerfil = async (req, res) =>{
+    const usuario = await Usuarios.findByPk(req.user.id);
+
+    res.render('editar-perfil',{
+        nombrePagina: 'Editar Perfil',
+        usuario
+    })
+}
+
+exports.editarPerfil = async(req, res, next) =>{
+    
+}
