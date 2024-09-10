@@ -58,6 +58,7 @@ app.use(flash());
 
 //! Middleware (usuario, logueado, flash message, fecha actual)
 app.use((req, res, next) =>{
+    res.locals.usuario = {...req.user} || null;
     res.locals.mensajes = req.flash();
     
     const fecha = new Date();

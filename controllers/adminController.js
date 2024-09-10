@@ -14,7 +14,9 @@ exports.panelAdministracion = async (req, res)=>{
     peticiones.push(Meeti.findAll({where: {
         usuarioId: req.user.id,
         fecha : { [Op.gte ] : moment(new Date()).format("YYYY-MM-DD") }
-    }}));
+    },
+        order: [['fecha', 'ASC']]
+    }));
 
     peticiones.push(Meeti.findAll({where: {
         usuarioId: req.user.id,

@@ -5,6 +5,7 @@ const { body, validationResult } = require('express-validator')
 const multer = require('multer');
 const shortid = require('shortid');
 const fs = require('fs');
+const { v4 } = require('uuid');
 
 
 const configMulter = {
@@ -82,6 +83,7 @@ exports.crearGrupo = async (req, res) => {
     if (req.file) {
         grupo.imagen = req.file.filename;
     }
+    grupo.id = v4();
 
     try {
         //! Almacenar en base de datos
@@ -152,7 +154,6 @@ exports.formEditarImagen = async (req, res) =>{
 }
 
 //! Modifica la imagen en la base de datos y elimina la anterior
-
 exports.editarImagen = async (req, res, next) => {
     const grupo = await Grupos.findOne({ where: {id: req.params.grupoId, usuarioId: req.user.id }});
 

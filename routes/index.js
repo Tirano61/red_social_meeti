@@ -14,6 +14,10 @@ const router = express.Router();
 
 
 module.exports = function(){
+
+    //* Area publica *//
+    
+
     router.get('/', homeController.home );
 
     //! Crear y confirmar cuenta
@@ -24,6 +28,14 @@ module.exports = function(){
     //! Iniciar Sesion
     router.get('/iniciar-sesion', usuariosController.formIniciarSesion);
     router.post('/iniciar-sesion', authController.autentificarUsuario);
+
+    //! Cerrar Sesion
+    router.get('/cerrar-sesion',
+        authController.usuarioAutenticado,
+        authController.cerrarSesion
+    )
+
+    //* Area privada *//
 
     //! Panel de administracion
     router.get('/administracion', 
@@ -121,6 +133,17 @@ module.exports = function(){
         authController.usuarioAutenticado,
         usuariosController.cambiarPassword
     );
+    
+    //! Subir imagen de perfil
+    router.get('/imagen-perfil',
+        authController.usuarioAutenticado,
+        usuariosController.formSibirImagenPerfil
+    );
+    router.post('/imagen-perfil',
+        authController.usuarioAutenticado,
+        usuariosController.subirImagen,
+        usuariosController.guardarImagenPerfil
+    )
 
     return router;
 }

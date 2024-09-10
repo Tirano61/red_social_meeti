@@ -22,9 +22,12 @@
             <img src="/img/logo.png" alt="logo">
         </a>
         <nav class="nav">
-            <a href="#">Crear grupo</a>
-            <a href="/iniciar-sesion">Iniciar Sesión</a>
-            <a href="/crear-cuenta">Registrarse</a>
+            <% if(locals.usuario.id) { %>
+                <%- include('partials/nav-autenticado.ejs')  %>
+            <% }else { %>
+                <%- include('partials/nav-no-autenticado.ejs')  %>
+            <% } %>
+        </nav>
         </nav>
     </header>
     <!-- Para crear las alertas con connect-flash -->
@@ -43,9 +46,11 @@
 
     <footer class="site-footer contenedor">
         <nav class="nav">
-            <a href="#">Crear grupo</a>
-            <a href="/iniciar-sesion">Iniciar Sesión</a>
-            <a href="/crear-cuenta">Registrarse</a>
+            <% if(locals.usuario.id) { %>
+                <%- include('partials/nav-autenticado.ejs')  %>
+            <% }else { %>
+                <%- include('partials/nav-no-autenticado.ejs')  %>
+            <% } %>
         </nav>
         <p>Todos los derechos reservados Meeti <%- year %> &copy;   </p>
     </footer>
