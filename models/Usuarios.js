@@ -44,7 +44,7 @@ const Usuarios = db.define('usuarios', {
 }, {
     hooks: {
         beforeCreate(usuario) {
-            usuario.password = bcrypt.hashSync(usuario.password, bcrypt.genSaltSync(10), null);
+            usuario.password = Usuarios.prototype.hashPassword(usuario.password);
         }
     }
 });
@@ -52,6 +52,10 @@ const Usuarios = db.define('usuarios', {
 //! Metodo para comparar los passwords
 Usuarios.prototype.validarPassword = function(password){
     return bcrypt.compareSync(password, this.password);
+};
+
+Usuarios.prototype.hashPassword = function(password){
+    return bcrypt.hashSync( password, bcrypt.genSaltSync(10), null );
 };
 
 module.exports = Usuarios;

@@ -2,6 +2,7 @@ const { body, validationResult } = require("express-validator");
 const Usuarios = require("../models/Usuarios");
 const  enviarEmail = require('../handlers/emails');
 const email = require("../config/email");
+const flash = require("connect-flash/lib/flash");
 
 
 
@@ -90,7 +91,68 @@ exports.formEditarPerfil = async (req, res) =>{
         usuario
     })
 }
-
-exports.editarPerfil = async(req, res, next) =>{
+//! Almacena en la base de datos 
+exports.editarPerfil = async(req, res) =>{
+    const usuario = await Usuarios.findByPk(req.user.id);
     
+    const rules = [
+        body('nombre').notEmpty().withMessage('Se debe repetir el password'),
+        body('descripcion').notEmpty().withMessage('No puede quedar la descripción vacia'),
+        body('email').notEmpty().withMessage('El email no puede estar vacio'),
+    ]
+
+    await Promise.all(rules.map(validation => validation.run(req)));
+    const erroresExpress = validationResult(req); 
+    try {
+        const { nombre, descripcion, email } = req.body;
+        
+        usuario.nombre = nombre;
+        usuario.descripcion = descripcion;
+        usuario.email = email;
+
+        await usuario.save();
+
+        req.flash('exito', 'Cambios guardados correctamente' );
+        res.redirect('/administracion');
+
+    } catch (error) {
+        //! Extraer el message de los errores
+        const erroresSequelize = error.errors.map((err) =>  err.message );
+        //! extraer unicamente el msg de los errores
+        const errExp = erroresExpress.array().map((err) => err.msg);
+        //! Unirlos en un solo arreglo
+        const listaErrores = [...erroresSequelize, ...errExp];
+        req.flash('error', listaErrores );
+        res.redirect('/editar-perfil')
+    }
+    
+}
+//! Muestra el formulario para modificar el password
+exports.formCambiarPassword = async (req, res) =>{
+    res.render('cambiar-password', {
+        nombrePagina: 'Cambiar Password'
+    })
+}
+//! Verifica si el password anterios es correcto y lo modifica
+exports.cambiarPassword = async (req, res, next) =>{
+    const usuario = await  Usuarios.findByPk(req.user.id);
+    //! Verificar password
+    if(!usuario.validarPassword( req.body.anterior )){
+        req.flash('error', 'El password ingresado no es correcto');
+        res.redirect('/administracion');
+        return next();
+    }
+
+    //! Si el password es correcto hashear el nuevo
+    const hash = usuario.hashPassword(req.body.password);
+    //! Asignar el password hasheado
+    usuario.password = hash;
+    //! Guardar en la base de datos
+    await usuario.save();
+
+    req.logout(req.user, err =>{
+        if(err) return next();
+    });
+    req.flash('exito', 'Password modificado correctamente, vuelve a iniciar sesión');
+    res.redirect('/iniciar-sesion')
 }

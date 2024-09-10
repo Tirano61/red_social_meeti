@@ -107,9 +107,20 @@ module.exports = function(){
         authController.usuarioAutenticado,
         usuariosController.formEditarPerfil
     );
-    router.get('/editar-perfil',
+    router.post('/editar-perfil',
         authController.usuarioAutenticado,
         usuariosController.editarPerfil
     );
+
+    //! Modifica el password
+    router.get('/cambiar-password',
+        authController.usuarioAutenticado,
+        usuariosController.formCambiarPassword
+    );
+    router.post('/cambiar-password',
+        authController.usuarioAutenticado,
+        usuariosController.cambiarPassword
+    );
+
     return router;
 }
