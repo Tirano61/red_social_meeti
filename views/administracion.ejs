@@ -17,7 +17,9 @@
                     <div class="informacion-admin">
                         <% moment.locale('es') %>
                         <p class="fecha"><%= moment( meeti.fecha).format('LL')  %></p>
-                        <h3><%= meeti.titulo %></h3>
+                        <a href="/meeti/<%= meeti.slug %>">
+                            <h3><%= meeti.titulo %></h3>
+                        </a>
                         <small><%= meeti.interesados.length %> Interesados</small>
                     </div>
                     <div class="acciones contenedor-botones">

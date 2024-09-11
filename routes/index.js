@@ -9,6 +9,9 @@ const adminController = require('../controllers/adminController');
 const gruposController = require('../controllers/gruposController');
 const meetiController = require('../controllers/meetiController');
 
+const meetiControllerFE = require('../controllers/frontend/meetiControllerFE.js');
+
+
 const router = express.Router();
 
 
@@ -16,9 +19,18 @@ const router = express.Router();
 module.exports = function(){
 
     //* Area publica *//
-    
 
     router.get('/', homeController.home );
+
+    //! Muestra un Meeti
+    router.get('/meeti/:slug',
+        meetiControllerFE.mostrarMeeti
+    );
+
+    //! Confirma asistencia a meeti
+    router.post('/confirmar-asistencia/:slug',
+        meetiControllerFE.confirmarAsistencia
+    )
 
     //! Crear y confirmar cuenta
     router.get('/crear-cuenta', usuariosController.crearCuenta);
@@ -143,7 +155,8 @@ module.exports = function(){
         authController.usuarioAutenticado,
         usuariosController.subirImagen,
         usuariosController.guardarImagenPerfil
-    )
+    );
+
 
     return router;
 }

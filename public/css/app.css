@@ -424,6 +424,10 @@ trix-editor h1 {
     align-self: flex-start;
     padding-top: 4rem;
 }
+.descripcion div{
+    margin-top: 15px;
+    line-height: 2;
+}
 trix-toolbar, 
 trix-editor {
     background-color: white!important;
@@ -609,6 +613,8 @@ trix-toolbar .trix-button--icon-strike {
     padding: 2rem;
     border: 1px solid #C7C7C7;
     background-color: white;
+    width: -webkit-fill-available;
+    border-radius: 8px;
 }
 .comentario .texto p {
     margin: 0;
@@ -650,4 +656,8 @@ aside img {
 .buscador{
     width: 100%;
     display: flex;
+}
+#ubicacion-meeti {
+    height: 420px;
+    width: 85%;
 }

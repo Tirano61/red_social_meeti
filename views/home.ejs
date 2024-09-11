@@ -36,8 +36,13 @@
                             <h3><%= meeti.titulo %></h3>
                         </a>
                         <div class="info-autor">
-                            <div class="imagen">
-                            </div>
+                            <% if(meeti.usuario.imagen){ %>
+                                <div class="imagen">
+                                    <img src="/uploads/perfiles/<%= meeti.usuario.imagen %>" alt="">
+                                </div>
+                            <% }else{ %>
+                            
+                            <% } %>
                             <div class="informacion">
                                 <p>Organizado por:</p>
                                 <p class="autor"><%= meeti.usuario.nombre  %></p>
