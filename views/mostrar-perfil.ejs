@@ -1,0 +1,13 @@
+<main class="asistentes contenedor">
+    <h1><%= nombrePagina %></h1>
+    <div class="informacion-usuarios">
+        <div class="imagen">
+            <% if(usuario.imagen){ %>
+                <img src="/uploads/perfiles/<%= usuario.imagen %>">
+            <% } %>
+        </div>
+        <div class="texto">
+            <%- usuario.descripcion %>
+        </div>
+    </div>
+</main>

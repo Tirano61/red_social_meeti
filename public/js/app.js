@@ -1,5 +1,6 @@
 
 const { OpenStreetMapProvider } = require("leaflet-geosearch");
+const asistencia = require('./asistencia');
 
 //! Obtener los valores de la base de datos
 const lat = document.querySelector('#lat').value || -33.7495668;

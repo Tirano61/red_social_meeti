@@ -21,15 +21,23 @@
             </div> <!-- Info autor -->
 
         </div><!-- Resumen del evento -->
-        <div class="prenta-asistencia">
+        <div class="pregunta-asistencia">
             <% if(usuario.id){ %>
+                <% const existe = meeti.interesados.includes(usuario.id) %>
                 <form action="/confirmar-asistencia/<%= meeti.slug %>" id="confirmar-asistencia">
                     <p>¿Asistiras?</p>
-                    <input type="submit" value="Si" class="btn btn-azul">
+                    <% if(existe){ %>
+                        <input type="hidden" id="accion" value="cancelar">
+                        <input type="submit" value="Cancelar" class="btn btn-rojo">
+                    <% }else{ %>
+                        <input type="hidden" id="accion" value="confirmar">
+                        <input type="submit" value="Si" class="btn btn-azul">
+                    <% } %>
+                    <div id="mensaje"></div> 
                 </form>
             <% }else{ %>
                 <p>Inicia sesión para confirmar tu asistencia</p>
-            <% } %>     
+            <% } %>    
         </div>
     </div>
 </div>
