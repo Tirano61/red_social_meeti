@@ -11,6 +11,7 @@ const meetiController = require('../controllers/meetiController');
 const usuariosControllerFE = require('../controllers/frontend/usuariosControllerFE');
 
 const meetiControllerFE = require('../controllers/frontend/meetiControllerFE.js');
+const gruposControllerFE = require('../controllers/frontend/gruposControllerFE.js')
 
 
 const router = express.Router();
@@ -41,6 +42,11 @@ module.exports = function(){
     //! Muestra perfiles en el front end
     router.get('/usuarios/:id',
         usuariosControllerFE.mostrarUsuario
+    )
+
+    //! Muestra los grupos en el front end
+    router.get('/grupos/:id',
+        gruposControllerFE.mostrarGrupo
     )
 
     //! Crear y confirmar cuenta
