@@ -432,6 +432,11 @@ form .informacion:last-of-type{
     flex: 1;
     color: black;
 }
+.form-editar{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
 .default-form legend {
     color: #068D9D;
     font-size: 1.6rem;

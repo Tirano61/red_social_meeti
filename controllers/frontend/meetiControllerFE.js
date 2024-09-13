@@ -3,6 +3,9 @@ const Grupos = require("../../models/Grupos")
 const Meeti = require("../../models/Meeti")
 const Usuarios = require("../../models/Usuarios")
 const { Sequelize } = require("sequelize")
+const Categorias = require("../../models/Categorias")
+const Comentarios = require("../../models/Comentarios")
+const Op = Sequelize.Op;
 
 
 
@@ -19,11 +22,41 @@ exports.mostrarMeeti = async (req, res)=>{
     if(!meeti){
         res.redirect('/');
     }
+    //! Consultar por meetis cercanos
+    const ubicacion = Sequelize.literal(
+        `ST_GeomFromText( 'POINT( ${meeti.ubucacion.coordinates[0]} ${meeti.ubucacion.coordinates[1]})')`);
+
+    //! ST_DISTANCE_Sphere = Retorna una linea en metros
+    const distancia = Sequelize.fn('ST_Distance_Sphere', Sequelize.col('ubicacion'), ubicacion);
+
+    //! Encontrar meetis cercanos, los ordena del mas cercao al lejano
+    const cercanos = await Meeti.findAll({ 
+        order: distancia, 
+        where: Sequelize.where(distancia, { [Op.lte]: 2000 }),
+        limit: 3,
+        include: [
+            { model: Grupos },
+            { model: Usuarios, attributes: [ 'id', 'nombre', 'imagen' ] },
+        ]
+    });
+    
+    //! Consultar despues de verificar que existe el Meeti
+    const comentarios = await Comentarios.findAll({
+        where: { meetiId: meeti.id },
+        include: [
+            { 
+                model: Usuarios,
+                attributes:['id', 'nombre', 'imagen'],
+            }
+        ]   
+    })
 
     res.render('mostrar-meeti',{
         nombrePagina: meeti.titulo,
         meeti,
-        moment
+        moment,
+        comentarios,
+        cercanos
     })
 }
 
@@ -63,5 +96,33 @@ exports.mostrarAsistentes = async(req, res) => {
     res.render('asistentes-meeti',{
         nombrePagina: 'Listado de Asistentes',
         asistentes
+    })
+}
+
+exports.motrarCategoria = async (req, res, next) =>{
+    const categoria = await Categorias.findOne({ 
+        attributes: ['id'],
+        where: { slug: req.params.categoria},
+    });
+
+    const meetis = await Meeti.findAll({
+        order:[
+            ['fecha', 'ASC']
+        ],
+        include: [
+            { 
+                model: Grupos, 
+                where: { categoriaId: categoria.id }
+            },
+            {
+                model: Usuarios,
+            }
+        ]
+    });
+
+    res.render('categoria', {
+        nombrePagina: `Categoría : ${categoria.nombre}`,
+        meetis,
+        moment
     })
 }

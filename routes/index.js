@@ -12,6 +12,7 @@ const usuariosControllerFE = require('../controllers/frontend/usuariosController
 
 const meetiControllerFE = require('../controllers/frontend/meetiControllerFE.js');
 const gruposControllerFE = require('../controllers/frontend/gruposControllerFE.js')
+const comentariosControllerFE = require('../controllers/frontend/comentariosControllerFE.js')
 
 
 const router = express.Router();
@@ -39,15 +40,30 @@ module.exports = function(){
         meetiControllerFE.mostrarAsistentes
     );
 
+    //! Comentarios en el Meeti
+    router.post('/meeti/:id',
+        comentariosControllerFE.agregarComentario
+    );
+
     //! Muestra perfiles en el front end
     router.get('/usuarios/:id',
         usuariosControllerFE.mostrarUsuario
     )
 
+    //! Elimina comentarios en el Meeti
+    router.post('/eliminar-comentario',
+        comentariosControllerFE.eliminarComentario
+    )
+
     //! Muestra los grupos en el front end
     router.get('/grupos/:id',
         gruposControllerFE.mostrarGrupo
-    )
+    );
+
+    //! Muestra Meetis por categoria
+    router.get('/categoria/:categoria',
+        meetiControllerFE.motrarCategoria
+    );
 
     //! Crear y confirmar cuenta
     router.get('/crear-cuenta', usuariosController.crearCuenta);
