@@ -24,16 +24,17 @@ exports.mostrarMeeti = async (req, res)=>{
     }
     //! Consultar por meetis cercanos
     const ubicacion = Sequelize.literal(
-        `ST_GeomFromText( 'POINT( ${meeti.ubucacion.coordinates[0]} ${meeti.ubucacion.coordinates[1]})')`);
+        `ST_GeomFromText( 'POINT( ${meeti.ubicacion.coordinates[0]} ${meeti.ubicacion.coordinates[1]})')`);
 
     //! ST_DISTANCE_Sphere = Retorna una linea en metros
-    const distancia = Sequelize.fn('ST_Distance_Sphere', Sequelize.col('ubicacion'), ubicacion);
+    const distancia = Sequelize.fn('ST_DistanceSphere', Sequelize.col('ubicacion'), ubicacion);
 
     //! Encontrar meetis cercanos, los ordena del mas cercao al lejano
     const cercanos = await Meeti.findAll({ 
         order: distancia, 
         where: Sequelize.where(distancia, { [Op.lte]: 2000 }),
         limit: 3,
+        offset: 1,
         include: [
             { model: Grupos },
             { model: Usuarios, attributes: [ 'id', 'nombre', 'imagen' ] },
