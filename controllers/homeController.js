@@ -21,12 +21,12 @@ exports.home = async (req, res) =>{
         ] 
     }));
 
-    const [ categorias, meetis ] = await Promise.all(consultas);
-    console.log(meetis.usuario);
+    const [ categorias, meeti ] = await Promise.all(consultas);
+
     res.render('home', {
         nombrePagina: 'Inicio',
         categorias,
-        meetis,
+        meetis : meeti,
         moment
     });
 }
