@@ -7,6 +7,8 @@
 
 npm install -D babel-loader @babel/core @babel/preset-env webpack webpack-cli
 
+## El registro es enviado a mailtrap
+
 
 ## Servicio en Render
 
